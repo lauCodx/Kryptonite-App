@@ -3,10 +3,13 @@ import mongoose from "mongoose"
 const UserSchema = new mongoose.Schema({
     email: {
         type: String,
-        require: true
+        require: true,
+        lowercase: true
     },
-    apiKey: String
+    apiKey: String,
+
 },
+
 { 
     timestamps: true
 }
