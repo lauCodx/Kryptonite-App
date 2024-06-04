@@ -1,7 +1,7 @@
 import multer from "multer"
 import express from "express"
 import validateToken from "../middlewares/validate"
-import { generateApiKey,} from "../controllers/file.controller"
+import { generateApiKey, uploadImage } from "../controllers/file.controller"
 
 const route = express.Router()
 
@@ -16,7 +16,9 @@ const storage = multer.diskStorage({
 
 const upload = multer({storage: storage})
 
-route.get("/generate-apikey", validateToken, generateApiKey)
-// route.post("/upload", upload.single('image'),  uploadImage)
+route.use(validateToken)
+
+route.get("/generate-apikey", generateApiKey)
+route.post("/upload", upload.single('image'),  uploadImage)
 
 export default route;

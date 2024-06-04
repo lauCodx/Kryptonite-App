@@ -205,7 +205,7 @@ const loginUser = asyncHandler( async(req:Request, res: Response) =>{
     const accessToken = jwt.sign(
       {email:user.email, _id:user.id},
       process.env.ACCESS_KEY!,
-      {expiresIn: '30m'}
+      {expiresIn: '1d'}
     )
     res.status(200).send(accessToken)
   
