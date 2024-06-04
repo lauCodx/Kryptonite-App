@@ -6,6 +6,7 @@ const UserSchema = new mongoose.Schema({
         require: true,
         lowercase: true
     },
+    
     apiKey: String,
 
 },

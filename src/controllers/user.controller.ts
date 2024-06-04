@@ -26,7 +26,6 @@ const sendOtpRegistration = asyncHandler(async (req: Request, res: Response) => 
       lowerCaseAlphabets: false,
       specialChars: false,
     });
-    console.log(otp)
 
     const regOtp = await Otp.create({
       email,
@@ -209,12 +208,12 @@ const loginUser = asyncHandler( async(req:Request, res: Response) =>{
       {expiresIn: '30m'}
     )
     res.status(200).send(accessToken)
-    console.log(accessToken)
+  
   }
 })
 
 const currentUser = asyncHandler( async(req:URequest, res:Response) => {
-  console.log(req.user)
+  console.log(req.user!._id)
   res.status(200).json(req.user)
 })
 export { sendOtpRegistration, registerUser, loginOtp, loginUser, currentUser };
