@@ -12,7 +12,7 @@
 
 ## Installation
 
-Follow these steps to get your development environment set up and run the Kid-Friendly LMS API locally.
+Follow these steps to get your development environment set up and run locally.
 
 `npm install`
 
