@@ -1,14 +1,26 @@
 import { Request } from "express";
-import mongoose, { Document } from "mongoose";
+import mongoose, { Document, ObjectId } from "mongoose";
 
 
 export interface userInterface {
-    _id: string
+    _id: string;
     email: string;
     apiKey: string;
-    user_Id :string;
+    user_id :string;
    
 }
+
+interface ApiUser {
+
+    _id:string;
+    apiKey:string;
+    user_Id: ObjectId
+}
+
+export interface authRequest extends Request{
+    userApi?: ApiUser
+}
+
 
 export interface URequest extends Request {
     user?: userInterface

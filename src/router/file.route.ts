@@ -16,9 +16,9 @@ const storage = multer.diskStorage({
 
 const upload = multer({storage: storage})
 
-route.use(validateToken)
+// route.use(validateToken)
 
-route.get("/generate-apikey", generateApiKey)
-route.post("/upload", upload.single('image'),  uploadImage)
+route.get("/generate-apikey",validateToken, generateApiKey)
+route.post("/upload", upload.single('image'), uploadImage)
 
 export default route;

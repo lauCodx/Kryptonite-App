@@ -1,32 +1,36 @@
 import jwt from "jsonwebtoken"
 import asyncHandler from "express-async-handler"
 import { NextFunction, Request, Response } from "express"
-import { URequest } from "../interface/user.interface";
+import { URequest, authRequest } from "../interface/user.interface";
+import User from "../model/user.model"
 
 
-const validateToken = asyncHandler(async(req:URequest, res:Response, next:NextFunction) =>{
+
+
+const validateToken = async(req:URequest, res:Response, next:NextFunction) =>{
     const authHeader = req.headers ['authorization'];
 
-    if (!authHeader) {
+try {
+
+    if (!authHeader && !(authHeader?.startsWith("Bearer"))){
         res.status(400);
-        throw new Error("No authorization found!")
+        throw new Error ("No token provided, access denied")
+    };
+
+    const token = authHeader.split(" ")[1];
+    const decoded : any = jwt.verify(token, process.env.ACCESS_KEY as string);
+    const user = await User.findById (decoded._id)
+    if(!user){
+        res.status(404);
+        throw new Error("User not found, Authorization denied!")
     }
 
-    if (authHeader && (authHeader.startsWith("Bearer"))){
-        const token = authHeader.split (" ")[1];
+    req.user = decoded
+    next()
 
-        if (!token){
-            res.status(400).send("Invalid token")
-        };
-
-        jwt.verify(token, process.env.ACCESS_KEY!, (err:any, decoded:any) => {
-            if (err){
-                res.status(401).send ("Unauthorized user or token has expired")
-            };
-            req.user = decoded;
-            next()
-        })
-    }
-})
+}catch (error) {
+    next(error)
+}
+}
 
 export default validateToken

@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import constants from "../constants";
+import { title } from "process";
 
 const errorHandler = (
   err: Error,
@@ -32,7 +33,11 @@ const errorHandler = (
       break;
 
     default:
-      console.log("No error, all good");
+      console.log(err.message)
+      res.status(400).json({
+        title: "An error occured",
+        message: err.message
+      });
       break;
   }
 };
