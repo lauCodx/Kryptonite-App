@@ -1,8 +1,9 @@
 import jwt from "jsonwebtoken"
 import asyncHandler from "express-async-handler"
 import { NextFunction, Request, Response } from "express"
-import { URequest, authRequest } from "../interface/user.interface";
+import { ApiUser, URequest, authRequest } from "../interface/user.interface";
 import User from "../model/user.model"
+import ApiK from "../model/apikey.model"
 
 
 
@@ -32,5 +33,7 @@ try {
     next(error)
 }
 }
+
+
 
 export default validateToken

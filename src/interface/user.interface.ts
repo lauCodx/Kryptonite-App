@@ -10,15 +10,15 @@ export interface userInterface {
    
 }
 
-interface ApiUser {
+export interface ApiUser {
 
     _id:string;
     apiKey:string;
-    user_Id: ObjectId
+    user_Id: string
 }
 
 export interface authRequest extends Request{
-    userApi?: ApiUser
+    user?: ApiUser
 }
 
 

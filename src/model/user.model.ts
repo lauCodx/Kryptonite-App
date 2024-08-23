@@ -1,4 +1,5 @@
-import mongoose from "mongoose"
+import mongoose, { Document } from "mongoose"
+
 
 const UserSchema = new mongoose.Schema({
     email: {
@@ -7,10 +8,12 @@ const UserSchema = new mongoose.Schema({
         lowercase: true
     },
     
-    apiKey: String,
+    apiKey:{
+        type: String,
+        require: true
+    }
 
 },
-
 { 
     timestamps: true
 }

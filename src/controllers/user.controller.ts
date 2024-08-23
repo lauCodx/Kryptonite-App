@@ -230,8 +230,8 @@ const loginUser = async(req:Request, res: Response, next: NextFunction) =>{
   }
 }
 
-const currentUser = asyncHandler( async(req:URequest, res:Response) => {
+const currentUser =  async(req:URequest, res:Response) => {
   console.log(req.user!._id)
-  res.status(200).json(req.user)
-})
+  res.status(200).json(req.user?._id)
+}
 export { sendOtpRegistration, registerUser, loginOtp, loginUser, currentUser };

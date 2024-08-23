@@ -2,6 +2,7 @@ import mongoose from "mongoose"
 
 const FileSchema = new mongoose.Schema({
     img:{
+        name:String,
         data: String,
         contentType: String
     },
@@ -10,6 +11,9 @@ const FileSchema = new mongoose.Schema({
         require:true,
         ref: "User"
     }
+},
+{
+    timestamps: true
 })
 
 const ImageFile = mongoose.model("Image", FileSchema )

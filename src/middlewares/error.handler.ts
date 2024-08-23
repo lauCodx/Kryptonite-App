@@ -33,7 +33,7 @@ const errorHandler = (
       break;
 
     default:
-      console.log(err.message)
+      console.error(err.message)
       res.status(400).json({
         title: "An error occured",
         message: err.message
