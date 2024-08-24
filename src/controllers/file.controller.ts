@@ -6,6 +6,7 @@ import { IUser, URequest, userInterface } from "../interface/user.interface";
 import User from "../model/user.model"
 import Image from "../model/file.image.model"
 import path from "path"
+import { getAllImage } from "../service/file.service";
 
 
 const generateApiKey = async(req:URequest, res:Response, next: NextFunction) =>{
@@ -89,5 +90,40 @@ const uploadImage = async(req:URequest, res:Response, next: NextFunction) =>{
       next(error)
    }
 
+}
+
+export const getImage = async (req:URequest, res:Response, next: NextFunction)=>{
+    const user_id: string | any = req.user?._id
+    
+
+   try {
+    const images = await getAllImage({user_id})
+
+    if(images.length === 0){
+        return res.status(200).send("No image found")
+    }
+
+    const imgBuffer = images.map(image =>{
+       if(image.img?.data){
+        return {
+            name: image.img?.name,
+            contentType:image.img?.contentType,
+            data:Buffer.from(image.img?.data, 'base64').toString('base64')
+        }
+       }else{
+        return null
+       }
+       
+    }).filter(image => image !== null)
+
+
+
+    return res.status(200).json(imgBuffer)
+    
+   } catch (error) {
+    next(error)
+   }
+
+   
 }
 export {generateApiKey, uploadImage}
