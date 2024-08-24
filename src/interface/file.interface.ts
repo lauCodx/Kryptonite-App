@@ -1,5 +1,5 @@
 export interface imgFile {
-    _id: string;
+    id: string;
     img:{
         name:string;
         data:string;

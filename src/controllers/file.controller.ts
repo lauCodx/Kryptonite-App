@@ -6,10 +6,10 @@ import { IUser, URequest, userInterface } from "../interface/user.interface";
 import User from "../model/user.model"
 import Image from "../model/file.image.model"
 import path from "path"
-import { getAllImage } from "../service/file.service";
+import { getAllImage, getImage } from "../service/file.service";
 
 
-const generateApiKey = async(req:URequest, res:Response, next: NextFunction) =>{
+export const generateApiKey = async(req:URequest, res:Response, next: NextFunction) =>{
     const userId = req.user?._id
     console.log(userId)
 
@@ -36,7 +36,7 @@ const generateApiKey = async(req:URequest, res:Response, next: NextFunction) =>{
 }
 
 
-const uploadImage = async(req:URequest, res:Response, next: NextFunction) =>{
+export const uploadImage = async(req:URequest, res:Response, next: NextFunction) =>{
     const {apiKey} = req.body
     const userId = req.user?._id
     
@@ -92,7 +92,7 @@ const uploadImage = async(req:URequest, res:Response, next: NextFunction) =>{
 
 }
 
-export const getImage = async (req:URequest, res:Response, next: NextFunction)=>{
+export const getAllImages = async (req:URequest, res:Response, next: NextFunction)=>{
     const user_id: string | any = req.user?._id
     
 
@@ -104,8 +104,10 @@ export const getImage = async (req:URequest, res:Response, next: NextFunction)=>
     }
 
     const imgBuffer = images.map(image =>{
+       
        if(image.img?.data){
         return {
+    
             name: image.img?.name,
             contentType:image.img?.contentType,
             data:Buffer.from(image.img?.data, 'base64').toString('base64')
@@ -116,14 +118,42 @@ export const getImage = async (req:URequest, res:Response, next: NextFunction)=>
        
     }).filter(image => image !== null)
 
-
-
     return res.status(200).json(imgBuffer)
     
    } catch (error) {
-    next(error)
-   }
-
-   
+        next(error)
+   }  
 }
-export {generateApiKey, uploadImage}
+
+export const getSingleImage = async (req:URequest, res:Response, next: NextFunction) =>{
+    const {id} = req.params;
+    const user_id = req.user?._id
+
+    try {
+
+        if (!id || !user_id){
+            res.status(400);
+            throw new Error ("Invalid IDs")
+        };
+
+        const images = await getImage(id);
+            
+        if(!images){
+            res.status(400);
+            throw new Error("Image not found")
+        }
+
+        if(!images.img?.data){
+            res.status(400);
+            throw new Error ("Image data is missing!")
+        }
+
+        const imgBuffer = Buffer.from(images.img?.data, 'base64');
+
+        res.status(200).json(imgBuffer)
+        
+    } catch (error) {
+        next(error)
+    }
+}
+
